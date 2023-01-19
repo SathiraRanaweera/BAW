@@ -1,0 +1,347 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "CBS API STAGE",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://identitystg.crib.lk"
+    },
+    {
+      "url": "https://cimsstg.services.crib.lk"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "paths": {
+    "/connect/token": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Auth Token",
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "grant_type": {
+                    "type": "string",
+                    "example": "client_credentials"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "example": "cb5webservices"
+                  },
+                  "client_id": {
+                    "type": "string",
+                    "example": "<API_USER_NAME>"
+                  },
+                  "client_secret": {
+                    "type": "string",
+                    "example": "<API_PASSWORD>"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/search/smart/individual": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "parameters": {
+                    "applicationNumber": "100001",
+                    "applicationDate": "<YYYY-MM-DD>",
+                    "subjectName": "<SUBJECT FULL NAME>",
+                    "creditFacilityType": "Loan",
+                    "creditFacilityCurrency": "LKR",
+                    "reportDate": "<YYYY-MM-DD>",
+                    "creditFacilityAmount": {
+                      "value": 1000000,
+                      "currency": "LKR",
+                      "localValue": 0
+                    },
+                    "fullName": "<SUBJECT FULL NAME>",
+                    "gender": "<Male or Female>",
+                    "idNumbersList": [
+                      {
+                        "idNumberType": "NIC",
+                        "idNumber": "<NIC>"
+                      }
+                    ]
+                  },
+                  "inquiryReason": "EvaluatingOfABorrowerForANewCreditFacility",
+                  "interactiveSearch": false,
+                  "consent": true,
+                  "timeOut": 90
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/search/smart/individual/continue": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Search Continue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "correlationId": "<WorkflowId from Search Result>",
+                  "action": "Check",
+                  "data": "false"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/reports/custom": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Report",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "sectionsList": [
+                    "CreditinfoReportPlus"
+                  ],
+                  "subjectToken": "<SUBJECT_TOKEN_FROM_SEARCH_RESULT>",
+                  "timeout": 60
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/reports/custom/<REPORT_REQUEST_ID>": {
+      "get": {
+        "tags": [
+          "default"
+        ],
+        "summary": "ReportToken",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/reports/pdf": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "ReportPDF",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "reportToken": "<REPORT_REQUEST_ID>",
+                  "languageCode": "en-GB"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/reports/custom/sections": {
+      "get": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Check Available Report Types",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/search/smart/company": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Company Search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "parameters": {
+                    "reportDate": "2022-12-07",
+                    "applicationNumber": "10002",
+                    "applicationDate": "2022-12-07",
+                    "creditFacilityType": "Loan",
+                    "creditFacilityAmount": {
+                      "value": 5000000,
+                      "currency": "LKR"
+                    },
+                    "idNumbersList": [
+                      {
+                        "idNumber": "<BR Number Here>",
+                        "idNumberType": "BusinessRegistrationNumber"
+                      }
+                    ],
+                    "companyName": "<Name of the Corporate Entity>",
+                    "subjectName": "<Name of the Corporate Entity>",
+                    "creditFacilityCurrency": "LKR"
+                  },
+                  "inquiryReason": "EvaluatingOfABorrowerForANewCreditFacility",
+                  "interactiveSearch": false,
+                  "consent": true,
+                  "timeOut": 90
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    },
+    "/api/5.53/search/smart/company/continue": {
+      "post": {
+        "tags": [
+          "default"
+        ],
+        "summary": "Company Search Continue",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "example": {
+                  "correlationId": "420f7746-1a0e-44c8-9867-d9f25707acc7",
+                  "action": "Check"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful response",
+            "content": {
+              "application/json": {}
+            }
+          }
+        }
+      }
+    }
+  }
+}
